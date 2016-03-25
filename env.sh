@@ -1,0 +1,13 @@
+#!/bin/bash
+
+export ELASTICSEARCH_VERSION=latest
+export LOGSTASH_VERSION=latest
+export REDIS_VERSION=latest
+export ELASTICSEARCH_HTTP_PORT=9200
+export ELASTICSEARCH_TCP_PORT=9300
+export ELASTICSEARCH_DATA=/data/elk/es-storage
+export KIBANA_PORT=5601
+export REDIS_PORT=6378
+export REDIS_DATA=/data/elk/redis
+export LOGSTASH_SHIPPER_TCP_PORT=9500
+export LOGSTASH_SHIPPER_UDP_PORT=9600
