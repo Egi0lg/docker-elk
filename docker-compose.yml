@@ -8,12 +8,16 @@ services:
     ports:
       - "${ELASTICSEARCH_HTTP_PORT}:9200"
       - "${ELASTICSEARCH_TCP_PORT}:9300"
+    networks:
+      - elk
   redis:
     image: redis:${REDIS_VERSION}
     ports:
       - "${REDIS_PORT}:6379"
     volumes:
       - ${REDIS_DATA}:/data
+    networks:
+      - elk
   logstash-indexer:
     image: logstash:${LOGSTASH_VERSION}
     command: logstash -f /etc/logstash/conf.d/
@@ -22,6 +26,8 @@ services:
     links:
       - elasticsearch
       - redis
+    networks:
+      - elk
   logstash-shipper:
     image: logstash:${LOGSTASH_VERSION}
     command: logstash -f /etc/logstash/conf.d/
@@ -32,6 +38,8 @@ services:
       - "${LOGSTASH_SHIPPER_UDP_PORT}:9600/udp"
     links:
       - redis
+    networks:
+      - elk
   kibana:
     build: kibana
     volumes:
@@ -40,5 +48,9 @@ services:
       - "${KIBANA_PORT}:5601"
     links:
       - elasticsearch
-  
+    networks:
+      - elk
 
+networks:
+  elk:
+    driver: bridge
