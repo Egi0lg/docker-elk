@@ -1,7 +1,8 @@
 version: '2'
 services:
   elasticsearch:
-    image: elasticsearch:${ELASTICSEARCH_VERSION}
+    build:
+      context: ./elasticsearch
     command: elasticsearch -Des.network.host=0.0.0.0
     volumes:
       - ${ELASTICSEARCH_DATA}:/usr/share/elasticsearch/data
@@ -41,7 +42,8 @@ services:
     networks:
       - elk
   kibana:
-    build: kibana
+    build:
+      context: ./kibana
     volumes:
       - ./kibana/config/:/opt/kibana/config/
     ports:
