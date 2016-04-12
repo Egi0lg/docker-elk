@@ -3,8 +3,9 @@ services:
   elasticsearch:
     build:
       context: ./elasticsearch
-    command: elasticsearch -Des.network.host=0.0.0.0
     volumes:
+      - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - ./elasticsearch/config/logging.yml:/usr/share/elasticsearch/config/logging.yml
       - ${ELASTICSEARCH_DATA}:/usr/share/elasticsearch/data
     ports:
       - "${ELASTICSEARCH_HTTP_PORT}:9200"
@@ -13,10 +14,12 @@ services:
       - elk
   redis:
     image: redis:${REDIS_VERSION}
+    command: redis-server /usr/local/etc/redis/redis.conf
     ports:
       - "${REDIS_PORT}:6379"
     volumes:
       - ${REDIS_DATA}:/data
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
     networks:
       - elk
   logstash-indexer:
