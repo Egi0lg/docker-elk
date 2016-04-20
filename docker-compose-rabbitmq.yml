@@ -1,0 +1,46 @@
+version: '2'
+services:
+  elasticsearch:
+    extends:
+      file: base.yml
+      service: elasticsearch
+  logstash-indexer:
+    extends:
+      file: base.yml
+      service: logstash-indexer
+    volumes:
+      - ./logstash/indexer/config-rabbitmq:/etc/logstash/conf.d
+    links:
+      - rabbitmq
+      - elasticsearch
+  logstash-shipper:
+    extends:
+      file: base.yml
+      service: logstash-shipper
+    volumes:
+      - ./logstash/shipper/config-rabbitmq:/etc/logstash/conf.d
+    links:
+      - rabbitmq
+  kibana:
+    extends:
+      file: base.yml
+      service: kibana
+    links:
+      - elasticsearch
+  rabbitmq:
+    image: rabbitmq:${RABBITMQ_VERSION}
+    volumes:
+      - ${RABBITMQ_DATA}:/var/lib/rabbitmq
+    ports:
+      - "${RABBITMQ_MGR_PORT}:15672"
+    mem_limit: ${RABBITMQ_MEM_LIMIT}
+    hostname: rabbitmq.elk
+    networks:
+      - elk
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASS}
+
+networks:
+  elk:
+    driver: bridge

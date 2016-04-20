@@ -1,0 +1,44 @@
+version: '2'
+services:
+  elasticsearch:
+    extends:
+      file: base.yml
+      service: elasticsearch
+  logstash-indexer:
+    extends:
+      file: base.yml
+      service: logstash-indexer
+    volumes:
+      - ./logstash/indexer/config-redis:/etc/logstash/conf.d
+    links:
+      - redis
+      - elasticsearch
+  logstash-shipper:
+    extends:
+      file: base.yml
+      service: logstash-shipper
+    volumes:
+      - ./logstash/shipper/config-redis:/etc/logstash/conf.d
+    links:
+      - redis
+  kibana:
+    extends:
+      file: base.yml
+      service: kibana
+    links:
+      - elasticsearch
+  redis:
+    image: redis:${REDIS_VERSION}
+    command: redis-server /usr/local/etc/redis/redis.conf
+    ports:
+      - "${REDIS_PORT}:6379"
+    volumes:
+      - ${REDIS_DATA}:/data
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+    mem_limit: ${REDIS_MEM_LIMIT}
+    networks:
+      - elk
+
+networks:
+  elk:
+    driver: bridge
