@@ -34,6 +34,7 @@ services:
     ports:
       - "${RABBITMQ_MGR_PORT}:15672"
     mem_limit: ${RABBITMQ_MEM_LIMIT}
+    cpu_shares: ${RABBITMQ_CPU_SHARES}
     hostname: rabbitmq.elk
     networks:
       - elk
