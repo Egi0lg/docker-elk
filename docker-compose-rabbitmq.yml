@@ -4,6 +4,7 @@ services:
     extends:
       file: base.yml
       service: elasticsearch
+    cpu_shares: 20
   logstash-indexer:
     extends:
       file: base.yml
@@ -13,6 +14,7 @@ services:
     links:
       - rabbitmq
       - elasticsearch
+    cpu_shares: 8
   logstash-shipper:
     extends:
       file: base.yml
@@ -21,12 +23,14 @@ services:
       - ./logstash/shipper/config-rabbitmq:/etc/logstash/conf.d
     links:
       - rabbitmq
+    cpu_shares: 8
   kibana:
     extends:
       file: base.yml
       service: kibana
     links:
       - elasticsearch
+    cpu_shares: 2
   rabbitmq:
     image: rabbitmq:${RABBITMQ_VERSION}
     volumes:
@@ -34,7 +38,7 @@ services:
     ports:
       - "${RABBITMQ_MGR_PORT}:15672"
     mem_limit: ${RABBITMQ_MEM_LIMIT}
-    cpu_shares: ${RABBITMQ_CPU_SHARES}
+    cpu_shares: 4
     hostname: rabbitmq.elk
     networks:
       - elk

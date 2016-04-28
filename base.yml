@@ -11,7 +11,6 @@ services:
       - "${ELASTICSEARCH_HTTP_PORT}:9200"
       - "${ELASTICSEARCH_TCP_PORT}:9300"
     mem_limit: ${ES_MEM_LIMIT}
-    cpu_shares: ${ES_CPU_SHARES}
     networks:
       - elk
     environment:
@@ -20,7 +19,6 @@ services:
     image: logstash:${LOGSTASH_VERSION}
     command: logstash -f /etc/logstash/conf.d/
     mem_limit: ${LS_INDEXER_MEM_LIMIT}
-    cpu_shares: ${LS_INDEXER_CPU_SHARES}
     networks:
       - elk
   logstash-shipper:
@@ -30,7 +28,6 @@ services:
       - "${LOGSTASH_SHIPPER_TCP_PORT}:9500"
       - "${LOGSTASH_SHIPPER_UDP_PORT}:9600/udp"
     mem_limit: ${LS_SHIPPER_MEM_LIMIT}
-    cpu_shares: ${LS_SHIPPER_CPU_SHARES}
     networks:
       - elk
   kibana:
