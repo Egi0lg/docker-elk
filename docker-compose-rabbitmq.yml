@@ -38,7 +38,9 @@ services:
     ports:
       - "${RABBITMQ_MGR_PORT}:15672"
     mem_limit: ${RABBITMQ_MEM_LIMIT}
+    memswap_limit: ${RABBITMQ_MEM_LIMIT}
     cpu_shares: 4
+    restart: always
     hostname: rabbitmq.elk
     networks:
       - elk

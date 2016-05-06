@@ -40,7 +40,9 @@ services:
       - ${REDIS_DATA}:/data
       - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
     mem_limit: ${REDIS_MEM_LIMIT}
+    memswap_limit: ${REDIS_MEM_LIMIT}
     cpu_shares: 2
+    restart: always
     networks:
       - elk
 

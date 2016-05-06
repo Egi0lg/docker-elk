@@ -21,13 +21,13 @@ services:
       memlock: 9223372036854775807 #2^63 - 1 as unlimited
   logstash-indexer:
     image: logstash:${LOGSTASH_VERSION}
-    command: logstash -f /etc/logstash/conf.d/
+    command: logstash -w 8 -b 250 -f /etc/logstash/conf.d/
     mem_limit: ${LS_INDEXER_MEM_LIMIT}
     networks:
       - elk
   logstash-shipper:
     image: logstash:${LOGSTASH_VERSION}
-    command: logstash -f /etc/logstash/conf.d/
+    command: logstash -w 8 -b 250 -f /etc/logstash/conf.d/
     ports:
       - "${LOGSTASH_SHIPPER_TCP_PORT}:9500"
       - "${LOGSTASH_SHIPPER_UDP_PORT}:9600/udp"
