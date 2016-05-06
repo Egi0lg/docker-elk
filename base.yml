@@ -15,6 +15,10 @@ services:
       - elk
     environment:
       ES_HEAP_SIZE: 4g
+      MAX_LOCKED_MEMORY: unlimited
+      MAX_OPEN_FILES: 131070
+    ulimits:
+      memlock: 9223372036854775807 #2^63 - 1 as unlimited
   logstash-indexer:
     image: logstash:${LOGSTASH_VERSION}
     command: logstash -f /etc/logstash/conf.d/
