@@ -4,12 +4,7 @@ services:
     build:
       context: ./elasticsearch
     volumes:
-      - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
       - ./elasticsearch/config/logging.yml:/usr/share/elasticsearch/config/logging.yml
-      - ${ELASTICSEARCH_DATA}:/usr/share/elasticsearch/data
-    ports:
-      - "${ELASTICSEARCH_HTTP_PORT}:9200"
-      - "${ELASTICSEARCH_TCP_PORT}:9300"
     mem_limit: ${ES_MEM_LIMIT}
     networks:
       - elk

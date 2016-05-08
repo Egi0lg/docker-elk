@@ -8,6 +8,7 @@ export RABBITMQ_VERSION=3-management
 export ELASTICSEARCH_HTTP_PORT=9200
 export ELASTICSEARCH_TCP_PORT=9300
 export ELASTICSEARCH_DATA=/data/elk/es-storage
+export ELASTICSEARCH_SLAVE_DATA=/data/elk/es-slave-storage
 export KIBANA_PORT=5601
 export REDIS_PORT=6378
 export REDIS_DATA=/data/elk/redis

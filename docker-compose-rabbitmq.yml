@@ -5,6 +5,20 @@ services:
       file: base.yml
       service: elasticsearch
     cpu_shares: 20
+    volumes:
+      - ${ELASTICSEARCH_DATA}:/usr/share/elasticsearch/data
+      - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    ports:
+      - "${ELASTICSEARCH_HTTP_PORT}:9200"
+      - "${ELASTICSEARCH_TCP_PORT}:9300"
+  elasticsearch-slave:
+    extends:
+      file: base.yml
+      service: elasticsearch
+    cpu_shares: 20
+    volumes:
+      - ${ELASTICSEARCH_SLAVE_DATA}:/usr/share/elasticsearch/data
+      - ./elasticsearch/config/elasticsearch-slave.yml:/usr/share/elasticsearch/config/elasticsearch.yml
   logstash-indexer:
     extends:
       file: base.yml
