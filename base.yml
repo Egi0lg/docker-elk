@@ -4,7 +4,7 @@ services:
     build:
       context: ./elasticsearch
     volumes:
-      - ./elasticsearch/config/logging.yml:/usr/share/elasticsearch/config/logging.yml
+      - ./elasticsearch/config/logging.yml:/usr/share/elasticsearch/config/logging.yml:ro
     mem_limit: ${ES_MEM_LIMIT}
     networks:
       - elk
@@ -16,13 +16,13 @@ services:
       memlock: 9223372036854775807 #2^63 - 1 as unlimited
   logstash-indexer:
     image: logstash:${LOGSTASH_VERSION}
-    command: logstash -w 8 -b 250 -f /etc/logstash/conf.d/
+    command: logstash -w 8 -b 250 -f /etc/logstash.conf
     mem_limit: ${LS_INDEXER_MEM_LIMIT}
     networks:
       - elk
   logstash-shipper:
     image: logstash:${LOGSTASH_VERSION}
-    command: logstash -w 8 -b 250 -f /etc/logstash/conf.d/
+    command: logstash -w 8 -b 250 -f /etc/logstash.conf
     ports:
       - "${LOGSTASH_SHIPPER_TCP_PORT}:9500"
       - "${LOGSTASH_SHIPPER_UDP_PORT}:9600/udp"
@@ -33,7 +33,7 @@ services:
     build:
       context: ./kibana
     volumes:
-      - ./kibana/config/:/opt/kibana/config/
+      - ./kibana/config/:/opt/kibana/config/:ro
     ports:
       - "${KIBANA_PORT}:5601"
     mem_limit: ${KIBANA_MEM_LIMIT}

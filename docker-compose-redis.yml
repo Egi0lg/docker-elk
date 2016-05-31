@@ -7,7 +7,7 @@ services:
     cpu_shares: 20
     volumes:
       - ${ELASTICSEARCH_DATA}:/usr/share/elasticsearch/data
-      - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
     ports:
       - "${ELASTICSEARCH_HTTP_PORT}:9200"
       - "${ELASTICSEARCH_TCP_PORT}:9300"
@@ -18,13 +18,13 @@ services:
     cpu_shares: 20
     volumes:
       - ${ELASTICSEARCH_SLAVE_DATA}:/usr/share/elasticsearch/data
-      - ./elasticsearch/config/elasticsearch-slave.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - ./elasticsearch/config/elasticsearch-slave.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
   logstash-indexer:
     extends:
       file: base.yml
       service: logstash-indexer
     volumes:
-      - ./logstash/indexer/config-redis:/etc/logstash/conf.d
+      - ./logstash/indexer/ls-redis.conf:/etc/logstash.conf:ro
     links:
       - redis
       - elasticsearch
@@ -34,7 +34,7 @@ services:
       file: base.yml
       service: logstash-shipper
     volumes:
-      - ./logstash/shipper/config-redis:/etc/logstash/conf.d
+      - ./logstash/shipper/ls-redis.conf:/etc/logstash.conf:ro
     links:
       - redis
     cpu_shares: 8
@@ -52,7 +52,7 @@ services:
       - "${REDIS_PORT}:6379"
     volumes:
       - ${REDIS_DATA}:/data
-      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf:ro
     mem_limit: ${REDIS_MEM_LIMIT}
     memswap_limit: ${REDIS_MEM_LIMIT}
     cpu_shares: 2
