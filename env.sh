@@ -20,6 +20,7 @@ export RABBITMQ_MGR_PORT=15672
 export RABBITMQ_USER=logstash
 export RABBITMQ_PASS=logstash
 
+export ES_HEAP_SIZE=4g
 
 # for 16G
 export ES_MEM_LIMIT=8g
