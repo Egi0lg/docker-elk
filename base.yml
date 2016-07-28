@@ -39,3 +39,5 @@ services:
     mem_limit: ${KIBANA_MEM_LIMIT}
     networks:
       - elk
+    environment:
+      ES_HOST: elasticsearch
